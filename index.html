@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⛰️</text></svg>">
+    <title>Mountains</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Erica+One&display=swap" rel="stylesheet">
+
+    <style>
+    :root {
+      --maxY: -80%;
+      --earth: #493c2b;
+      --buildings: '🏫🏥🏬🏢🏤🏫🏥🏬🏢🏤🏫🏥🏬🏢🏤🏫🏥🏬🏢🏤🏫🏥🏬🏢🏤🏫🏥🏬🏢🏤🏫🏥🏬🏢🏤🏫🏥🏬🏢🏤🏫🏥🏬🏢🏤🏫🏥🏬🏢🏤';
+      --pines: '🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲';
+      --rocks: '🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨';
+      --road: #9d9d9d;
+      --grass: #115e33;
+      --city: #000;
+      --city-distant: #111;
+      --forest: #162613;
+      --forest-distant: #1b3317;
+      --hills: #42a842;
+      --mountain: #336082;
+      --scroll-time: 12s;
+    }
+
+    html, body {
+      margin: 0; padding: 0;
+      width: 100vw;
+      height: 100vh;
+      background: lightblue;
+      overflow-x: hidden;
+      /* overflow-y: hidden; */
+    }
+    body {
+      user-select: none;
+    }
+
+    * { box-sizing: border-box; }
+
+    .viewport {
+      background: lightblue;
+      width: 120vw;
+      height: 500vh;
+      overflow: hidden;
+      transform: translateZ(0);
+      transform: translateY(var(--maxY)); /* start at bottom */
+      animation: scroll var(--scroll-time) ease-in-out forwards;
+      animation-delay: 3s;
+    }
+
+    /* show emoji as silhouette. we'll be using this trick a lot. */
+    .silhouette {
+      letter-spacing: -40px;
+      font-size: 400%;
+      white-space: nowrap;
+      overflow: hidden;
+      color: transparent;
+      text-shadow: 0 0 0 #333;
+    }
+
+    /*
+      The main blocks that make up the page.
+      In order of appearance.
+    */
+    section { position: absolute; width: 100%; width: 120vw; left: -10vw;  }
+
+    /* --- 1. Underground. The journey begins. */
+    section.underground { top: 350vh; height: 150vh; 
+      display: grid;
+      background: var(--earth);
+      background: linear-gradient(0deg, #000 40%, var(--earth) 100%);
+      border-top: 1vh solid rgba(0,0,0,0.2); 
+    }
+    .monitor {
+      bottom: 5vh;
+      position: absolute;
+      width: 20vw;
+      height: 30vh;
+      background: #000;
+      max-width: 200px;
+      min-width: 200px;
+      left: 50%;
+      transform: translate(-50%, 0);
+    }
+    .screen {
+      position: absolute;
+      font-family: monospace;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: limegreen;
+      border: 5px solid #ccc;
+      border-bottom: 7px solid #ccc;
+      border-radius: 10px;
+      left: 50%;
+      transform: translate(-50%, 0);
+      width: 100%;
+      background: #333;
+      top: -10px;
+      padding: 10px;
+    }
+    .stand { position: absolute; width: 20px; height: 5vh; background: #ccc;
+      left: 50%;
+      transform: translate(-50%, 0);
+      bottom: -5vh;
+    }
+    .base {
+      position: absolute;
+      width: 70px;
+      height: 20px;
+      border-radius: 100%;
+      border-bottom: 7px solid #aaa;
+      bottom: -5vh;
+      left: 32%;
+      background: #ccc;
+    }
+    .screen p {
+      text-shadow: 0 0 5px limegreen;
+      overflow: hidden;
+      white-space: nowrap;
+      width: 0;
+      animation: typing 1s steps(18, end) forwards;
+      animation: typing 1s steps(18, end) forwards;
+    }
+    .screen p:nth-child(1) { animation-delay: 0; }
+    .screen p:nth-child(2) { animation-delay: 1s; }
+    .screen p:nth-child(3) { animation-delay: 2s; }
+    .skull { font-size: 1rem; position: absolute; top: 10vh; right: 20vw; transform: rotate(20deg); opacity: 50%; }
+    .skull::before { content: ' 💀';}
+    .worm { font-size: 2rem; position: absolute; top: 20vh; transform: scale(-1, 1); 
+      animation: peek 3s ease-in-out infinite;
+    }
+    .worm::before { content: '🪱'; }
+    .rocks { position: absolute; top: 3vh; width: 120vw; left: -10vw; 
+      text-shadow: 0 0 0 #000; opacity: 0.1;
+      font-size: 3rem;
+    }
+    .rocks:nth-child(2) { top: 20vh; opacity: 0.05; }
+    .rocks::after { content: var(--rocks); }
+
+
+    /* 2. Errm.. add sth here... */
+    section.grass { top: 345vh; height: 6vh; background: var(--grass); }
+    .flower { position: absolute; left: 20vw; }
+    .flower::before { content: '🌼'; }
+    .poop { position: absolute; left: 60vw; font-size: 130%; }
+    .poop::before { content: '💩'; }
+    .cat { position: absolute; left: 20vw; font-size: 120%; transform: scale(-1, 1); }
+    .cat::before { content: '🐈'; font-size: 150%; }
+
+    /* 3. Cars and stuff */
+    section.road { top: 335vh; height: 10vh; background: var(--road);
+      border-top: 1vh solid rgba(0,0,0,0.5);
+      border-bottom: 2vh solid rgba(0,0,0,0.5);
+      z-index: 1;
+    }
+    .street { position: absolute; width: 120vw; bottom: 0; font-size: 3rem; letter-spacing: 0.2rem;
+      white-space: nowrap;
+      overflow: hidden; }
+    .street::after { content: var(--buildings); }
+    .car { position: absolute; font-size: 300%; top: -1vh;
+      animation: drive 13s linear infinite;
+    }
+    .car::before { content: '🚗'; }
+
+    .bike { position: absolute; font-size: 200%; top: -3vh;
+      transform: scale(-1, 1);
+      animation: float 20s linear infinite;
+    }
+    .bike::before { content: '🚴'; }
+
+    /* 3. City skyline */
+    section.city { top: 280vh; height: 55vh; background: var(--city); }
+    .skyline { font-size: 800%; position: absolute; top: -25%; left: -30%; text-shadow: 0 0 0 var(--city); }
+    .skyline::after { content: var(--buildings); }
+
+    /* 4. Second city skyline */
+    section.city-distant { top: 240vh; height: 40vh; background: var(--city-distant); }
+    .city-distant .skyline { font-size: 600%; text-shadow: 0 0 0 var(--city-distant); }
+
+    /* 5. Pine fresh. You can almost smell it. */
+    section.forest { top: 210vh; height: 50vh; background: var(--forest);
+      transform: skew(10deg, 5deg);
+      width: 150vw; left: -20vw;
+    }
+    .treeline { position: absolute; left: -30%; top: -15%;  text-shadow: 0 0 0 var(--forest); }
+    .treeline::after { content: var(--pines); }
+
+    /* 6. More trees, please! */
+    section.forest-distant { top: 180vh; height: 50vh; background: var(--forest-distant);
+      transform: skew(-10deg, -5deg);
+      width: 150vw; left: -20vw;
+    }
+    .forest-distant .treeline { text-shadow: 0 0 0 var(--forest-distant); }
+
+    /* 7. Baaa! The vista starts to open... */
+    section.hills { top: 150vh; height: 100vh; background: var(--hills); }
+    .hill { position: absolute; top: 0; border-radius: 100%; background: var(--hills); }
+    .hill:nth-child(1) { left: 45vw; top: -20vh; width: 50vw; height: 60vh; }
+    .hill:nth-child(2) { left: -5vw; top: -10vh; width: 60vw; height: 60vh; }
+    .hill:nth-child(3) { right: -5vw; top: -10vh; width: 60vw; height: 60vh; }
+    .hill:nth-child(1) .sheep { text-align: center; font-size: 2rem; }
+    .hill:nth-child(1) .sheep::before { content: '🐑'; }
+    .hill:nth-child(2) .sheep { text-align: center; font-size: 1.5rem; transform: scale(-1, 1); }
+    .hill:nth-child(2) .sheep::before { content: '🐑'; }
+
+    /* 8. Touch the sky */
+    section.mountain { top: 100vh; height: 80vh; background: var(--mountain); }
+    .mountain .fade {
+      position: absolute; bottom: 20vh; height: 50vh; width: 100%;
+      background: linear-gradient(0deg, #fff 10%, var(--mountain) 100%);
+    }
+    .peak {
+      position: absolute; width: 60vw; height: 80vw; background: var(--mountain); left: 25%;
+      clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+      top: -40vw;
+      border-radius: 5px;
+      border-top: 10vh solid rgba(255,255,255,0.2);
+    }
+    .peak:nth-child(1) { border-top: 15vh solid rgba(255,255,255,0.5); }
+    .peak:nth-child(2) { left: -10vw; width: 70vw; top: -20vw; }
+    .peak:nth-child(3) { left: 60vw; width: 70vw; top: -22vw; }
+
+    /* 9. Couldnt come up with a good haiku. Have a slogan instead. */
+    section.haiku { top: 5vh; height: 30vh; text-align: center; z-index: 1; 
+      font-size: 2rem; font-weight: bold; font-family: Arial Bold, Helvetica, sans-serif;
+      color: #fff; text-shadow: 0 1px 7px #036;
+    }
+    .haiku p { margin: 0; padding: 0; opacity: 0; 
+      text-transform: uppercase;
+      font-family: "Erica One", sans-serif;
+      font-weight: 400;
+      font-style: normal;
+      font-size: 120%;
+      line-height: 1.2;
+    }
+    .haiku p:nth-child(1) {
+      animation: 1s fadeIn ease-in forwards;
+      animation-delay: 15s;
+    }
+    .haiku p:nth-child(2) {
+      animation: 1s fadeIn ease-in forwards;
+      animation-delay: 16s;
+      font-size: 160%;
+    }
+    .haiku p:nth-child(3) {
+      animation: 1s fadeIn ease-in forwards;
+      animation-delay: 17s;
+    }
+
+    /* 10. Reached the top and have to stop */
+    section.sky {
+      top: 0vh;
+      height: 100vh;
+      background: rgb(36,0,1);
+      background: linear-gradient(0deg, rgba(222,5,54,1) 0%, rgba(238,216,8,1) 16%, rgba(173,216,230,1) 34%);
+    }
+    .cloud1n{ font-size: 6rem; position: absolute; animation: float 15s linear infinite; }
+    .cloud:nth-child(1) { top: 25vh; animation: float 15s linear infinite; transform: scale(3, 1); }
+    .cloud:nth-child(2) { top: 35vh; font-size: 400%; animation: float 12s linear infinite; }
+    .cloud:nth-child(3) { top: 30vh; animation: float 10s linear infinite; }
+    .cloud:nth-child(4) { top: 40vh; animation: float 18s linear infinite; }
+    .cloud { font-size: 200%; }
+    .cloud::before { content: '☁️' ;}
+
+    .ufo { position: absolute; font-size: 300%; top: 100vh; left: 45vw;
+      animation: beamup 5s ease-in-out;
+      animation-delay: 30s;
+    }
+    .ufo::before { content: '🛸'; }
+  
+
+    /* The Animations. Makin' stuff moove */
+    /* main bottom to top scroll */
+    @keyframes scroll {
+    0% { transform: translateY(var(--maxY));  }
+    10% { transform: translateY(var(--maxY));  }
+    100% { transform: translateY(0%); }
+    }
+
+
+    /* like a cloud... */
+    @keyframes float {
+    0% { left: -20%; }
+    100% { left: 120%; }
+    }
+
+    @keyframes drive {
+    0% { right: -50%; }
+    100% { right: 150%; }
+    }
+
+    /* this one is for the worm */
+    @keyframes peek {
+    0% { left: 0; }
+    50% { left: 4rem; }
+    100% { left: 0; }
+    }
+
+    @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+    }
+
+    /* quick and dirty teletyping effect */
+    @keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+    }
+
+    /* hmm.. wonder what this if for? */
+    @keyframes beamup {
+    from { top: 100vh; }
+    to { top: -30vh;}
+    }
+
+    </style>
+
+  </head>
+  <body>
+
+    <div class="viewport">
+      <section class="haiku">
+        <p>Climb to the</p>
+        <p>TOP</p>
+        <p>Enjoy the view</p>
+      </section>
+      <section class="sky">
+        <div class="cloud"> </div>
+        <div class="cloud"> </div>
+        <div class="cloud"> </div>
+        <div class="cloud"> </div>
+        <div class="ufo"> </div>
+      </section>
+      <section class="mountain">
+        <div class="peak"></div>
+        <div class="peak"></div>
+        <div class="peak"></div>
+        <div class="fade"> </div>
+      </section>
+      <section class="hills">
+        <div class="hill"><div class="sheep"></div> </div>
+        <div class="hill"><div class="sheep"></div> </div>
+        <div class="hill"> </div>
+      </section>
+      <section class="forest-distant">
+        <div class="treeline silhouette"></div>
+      </section>
+      <section class="forest">
+        <div class="treeline silhouette"></div>
+      </section>
+      <section class="city-distant"> 
+        <div class="skyline silhouette"></div>
+      </section>
+      <section class="city"> 
+        <div class="skyline silhouette"></div>
+        <div class="street"> </div>
+      </section>
+      <section class="road">
+        <div class="bike"> </div>
+        <div class="car"> </div>
+      </section>
+
+      <section class="grass">
+        <div class="cat"> </div>
+        <div class="poop"> </div>
+      </section>
+
+      <section class="underground">
+        <div class="rocks silhouette"> </div>
+        <div class="rocks silhouette"> </div>
+        <div class="skull"> </div>
+        <div class="worm"> </div>
+        <div class="monitor">
+        <div class="screen">
+            <p> &nbsp;All Work And No Play. </p>
+            <p> &nbsp;All Work And No Play. </p>
+            <p> &nbsp;All Work And No Play. </p>
+            <div class="stand"></div>
+            <div class="base"></div>
+          </div>
+        </div>
+      </section>
+    </div><!-- .viewport -->
+  </body>
+</html>
